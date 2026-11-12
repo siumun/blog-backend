@@ -1,0 +1,18 @@
+{
+  "name": "app",
+  "private": true,
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/active_admin.js --bundle --sourcemap --format=iife --outdir=app/assets/builds --public-path=/assets --preserve-symlinks"
+  },
+  "dependencies": {
+    "jquery": "3.7.1",
+    "jquery-ui": "^1.14.2",
+    "jquery-ujs": "^1.2.3"
+  },
+  "overrides": {
+  "jquery": "3.7.1"
+  }
+}
