@@ -1,5 +1,15 @@
 #!/bin/bash -e
 
+# Hosts like Render tell the app which port to listen on via $PORT.
+# Thruster listens on HTTP_PORT (default 80) and runs Puma on TARGET_PORT (default 3000),
+# so make Thruster listen on $PORT and keep Puma off that port.
+if [ -n "${PORT}" ] && [ -z "${HTTP_PORT}" ]; then
+  export HTTP_PORT="${PORT}"
+  if [ "${PORT}" == "${TARGET_PORT:-3000}" ]; then
+    export TARGET_PORT=3001
+  fi
+fi
+
 # If running the rails server then create or migrate existing database
 if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
   ./bin/rails db:prepare
