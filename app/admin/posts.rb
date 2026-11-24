@@ -2,7 +2,7 @@ ActiveAdmin.register Post do
   preserve_default_filters!
   remove_filter :top_image_attachment, :top_image_blob
 
-  permit_params :title, :excerpt, :body, :publication_date, :status, :top_image
+  permit_params :title, :excerpt, :body, :publication_date, :status, :top_image, tag_ids: []
 
    before_create do |post|
     post.admin_user = current_admin_user
@@ -17,6 +17,7 @@ ActiveAdmin.register Post do
       f.input :publication_date
       f.input :status
       f.input :top_image, as: :file
+      f.input :tags, as: :check_boxes, collection: Tag.all
     end
     f.actions
   end

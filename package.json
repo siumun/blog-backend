@@ -10,9 +10,10 @@
   "dependencies": {
     "jquery": "3.7.1",
     "jquery-ui": "^1.14.2",
-    "jquery-ujs": "^1.2.3"
+    "jquery-ujs": "^1.2.3",
+    "lucide-react": "^1.78.0"
   },
   "overrides": {
-  "jquery": "3.7.1"
+    "jquery": "3.7.1"
   }
 }

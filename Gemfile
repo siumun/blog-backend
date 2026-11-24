@@ -73,3 +73,5 @@ gem "dartsass-rails", "~> 0.5.1"
 
 gem "rails-ujs"
 gem "jsbundling-rails", "~> 1.3"
+
+gem "rack-cors"
