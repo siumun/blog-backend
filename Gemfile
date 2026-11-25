@@ -75,3 +75,5 @@ gem "rails-ujs"
 gem "jsbundling-rails", "~> 1.3"
 
 gem "rack-cors"
+
+gem "cloudinary"
