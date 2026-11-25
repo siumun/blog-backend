@@ -36,8 +36,10 @@ class Post < ApplicationRecord
     if top_image.attached?
       Rails.application.routes.url_helpers.rails_blob_url(
         top_image,
-        host: "localhost:3000",
-        protocol: "http"
+        host: ENV.fetch("blog-backend-bk55.onrender.com"),
+        protocol: "https"
+        # host: "localhost:3000",
+        # protocol: "http"
       )
     end
   end
