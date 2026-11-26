@@ -9,25 +9,33 @@ module Api
         page = params[:page].to_i
         page = 1 if page < 1
 
-        offset = (page -  1) * per_page
+        published_posts = Post.where(status: :published)
+
+        total_posts = published_posts.count
+        total_pages = (total_posts.to_f / per_page).ceil
 
 
         @posts = Post.where(status: :published)
                     .order(publication_date: :desc, id: :desc)
                     .limit(per_page)
-                    .offset(offset)
+                    .offset((page-1) * per_page)
 
-        render json: @posts.as_json(
-          only: [
-            :id,
-            :title,
-            :slug,
-            :excerpt,
-            :view_count,
-            :publication_date
-          ],
-          methods: [:top_image_url]
-        )
+        render json: {
+          posts: @posts.as_json(
+            only: [
+              :id,
+              :title,
+              :slug,
+              :excerpt,
+              :view_count,
+              :publication_date
+            ],
+            methods: [:top_image_url]
+          ),
+          current_page: page,
+          total_pages: total_pages,
+          total_posts: total_posts
+        }
       end
 
       def show
