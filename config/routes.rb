@@ -32,6 +32,10 @@ Rails.application.routes.draw do
       
       post "subscription", to: "subscriptions#create"
 
+      get "posts/:post_id/comments", to:"comments#index"
+      post "posts/:post_id/comments", to:"comments#create"
+      delete "comments/:id", to: "comments#destroy"
+
       resources :tags, param: :slug, only: [:index] do
         member do
           get :posts

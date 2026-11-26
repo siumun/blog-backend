@@ -15,31 +15,21 @@ class Post < ApplicationRecord
   has_many :post_tags, dependent: :destroy
   has_many :tags, through: :post_tags
   has_one_attached :top_image
+  has_many :comments, dependent: :destroy
   
   enum :status, {
     draft: 0,
     published: 1
   }
 
-  # Ransack searchable attributes
-  def self.ransackable_attributes(auth_object = nil)
-    ["id", "title", "slug", "excerpt", "body",
-     "publication_date", "status", "view_count", "created_at", "updated_at"]
-  end
-
-  # Ransack searchable associations
-  def self.ransackable_associations(auth_object = nil)
-    ["admin_user", "favorites", "post_tags", "tags"]
-  end
-
   def top_image_url
     if top_image.attached?
       Rails.application.routes.url_helpers.rails_blob_url(
         top_image,
-        host: ENV.fetch("APP_HOST"),
-        protocol: "https"
-        # host: "localhost:3000",
-        # protocol: "http"
+        # host: ENV.fetch("APP_HOST"),
+        # protocol: "https"
+        host: "localhost:3000",
+        protocol: "http"
       )
     end
   end
