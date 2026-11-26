@@ -13,6 +13,14 @@ module Api
         Rails.logger.info "CHECKPOINT 2: relation created"
 
         if cursor_date.present? && cursor_id.present?
+          # Parse into a Time object so ActiveRecord converts it to UTC before
+          # querying. Passing the raw ISO string (e.g. "...+08:00") to a
+          # `timestamp without time zone` column makes Postgres silently drop
+          # the offset, shifting the cursor 8 hours and returning duplicates.
+          cursor_date = Time.zone.iso8601(cursor_date) rescue nil
+          cursor_id = Integer(cursor_id, exception: false)
+          return render(json: { error: "Invalid cursor" }, status: :bad_request) unless cursor_date && cursor_id
+
           @posts = @posts.where(
             "publication_date < ? OR (publication_date = ? AND id < ?)",
             cursor_date,
@@ -30,7 +38,7 @@ module Api
 
         next_cursor = if has_more && posts.any?
           {
-            cursor_date: posts.last.publication_date,
+            cursor_date: posts.last.publication_date.iso8601(6),
             cursor_id: posts.last.id
           }
         else
